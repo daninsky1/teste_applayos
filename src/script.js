@@ -1,3 +1,8 @@
+
+$(document).ready(function() {
+  $("#cpf").mask("000.000.000-00");
+  $("#celular").mask("(00) 00000-0000");
+});
 let candidatos = [
   { id: "1", cpf: "42604610876", nome: "Lucas Vieira Dias", celular: "11957770782", email: "lvdias98@gmail.com", sexo: "Masculino", nascimento: "01/12/1998", skills: { html: true, css: true, js: true } },
   { id: "2", cpf: "42604610876", nome: "Nelson Santana", celular: "11957770782", email: "lvdias98@gmail.com", sexo: "Masculino", nascimento: "01/12/1998", skills: { html: true, css: true, js: true } },
@@ -42,6 +47,11 @@ function fecharModal() {
   document.getElementById("skillJs").checked = false;
 }
 
+function salvar_validacao()
+{
+  
+}
+
 function salvar() {
   let id = document.getElementById("id").value;
   let cpf = document.getElementById("cpf").value;
@@ -55,6 +65,9 @@ function salvar() {
   let skillJs = document.getElementById("skillJs").checked;
 
   // Fazer validações aqui
+
+  salvar_validacao();
+
 
   // Fazer validações aqui
 
@@ -72,6 +85,8 @@ function salvar() {
       js: skillJs
     }
   };
+  
+  console.log(candidato);
 
   if(id!=''){
     let checkCandidato = candidatos.find(e=>e.id == candidato.id);
@@ -86,7 +101,6 @@ function salvar() {
     candidatos.push(candidato);
   }
 
-
   fecharModal();
   listarCandidatos();
 }
@@ -99,14 +113,25 @@ function listarCandidatos() {
     let linha = document.createElement("tr");
 
     let colunaCpf = document.createElement("td");
+    colunaCpf.setAttribute("id", "cpf-cell")
     let colunaNome = document.createElement("td");
+    //colunaCpf.setAttribute("id", "cpf-cell")
     let colunaCelular = document.createElement("td");
+    //colunaCpf.setAttribute("id", "cpf-cell")
     let colunaEmail = document.createElement("td");
+    //colunaCpf.setAttribute("id", "cpf-cell")
     let colunaSexo = document.createElement("td");
+    //colunaCpf.setAttribute("id", "cpf-cell")
     let colunaNascimento = document.createElement("td");
+    //colunaCpf.setAttribute("id", "cpf-cell")
     let colunaSkills = document.createElement("td");
+    //colunaCpf.setAttribute("id", "cpf-cell")
     let colunaEditar = document.createElement("td");
+    //colunaCpf.setAttribute("id", "cpf-cell")
     let colunaRemover = document.createElement("td");
+    
+    $("#cpf-cell").mask("000.000.000-00");
+
 
     // Funcionalidades botão editar
     let botaoEditar = document.createElement("button");
@@ -132,6 +157,9 @@ function listarCandidatos() {
     }
     if(candidato.skills.js){
       arrSkills.push('JS');
+    }
+    if(candidato.skills.js){
+      arrSkills.push('Bootstrap');
     }
 
     colunaCpf.appendChild(document.createTextNode(candidato.cpf));
