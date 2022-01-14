@@ -1,8 +1,9 @@
-
 $(document).ready(function() {
   $("#cpf").mask("000.000.000-00");
   $("#celular").mask("(00) 00000-0000");
+  $("#nascimento").mask("00/00/0000");
 });
+
 let candidatos = [
   { id: "1", cpf: "42604610876", nome: "Lucas Vieira Dias", celular: "11957770782", email: "lvdias98@gmail.com", sexo: "Masculino", nascimento: "01/12/1998", skills: { html: true, css: true, js: true } },
   { id: "2", cpf: "42604610876", nome: "Nelson Santana", celular: "11957770782", email: "lvdias98@gmail.com", sexo: "Masculino", nascimento: "01/12/1998", skills: { html: true, css: true, js: true } },
@@ -24,6 +25,8 @@ function abrirModal(candidato) {
     document.getElementById("skillHtml").checked = candidato.skills.html;
     document.getElementById("skillCss").checked = candidato.skills.css;
     document.getElementById("skillJs").checked = candidato.skills.js;
+
+    mask_form();
   }
 
   $('#candidatoModal').modal('show');
@@ -47,31 +50,98 @@ function fecharModal() {
   document.getElementById("skillJs").checked = false;
 }
 
-function salvar_validacao()
+function show_custom_alert(alert_msg)
+{
+  if (document.getElementById("custom-alert")) { close_custom_alert(); }
+  let custom_alert = document.createElement("div");
+  custom_alert.setAttribute("class", "alert alert-danger alert-dismissible fade show");
+  custom_alert.setAttribute("id", "custom-alert");
+  custom_alert.setAttribute("role", "alert");
+  custom_alert.innerHTML = `<strong>${alert_msg}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
+  let alert_parent = document.getElementById("modal-popup");
+  alert_parent.insertBefore(custom_alert, document.getElementById("modal-footer-el"));
+}
+
+function permanent_storage_add_row()
 {
   
+
+}
+
+function permanent_storage_remove_row()
+{
+
+}
+
+function close_custom_alert()
+{
+  let custom_alert = document.getElementById("custom-alert");
+  if (custom_alert) {
+    custom_alert.remove();
+  }
 }
 
 function salvar() {
   let id = document.getElementById("id").value;
-  let cpf = document.getElementById("cpf").value;
+  let cpf = $("#cpf").cleanVal();
   let nome = document.getElementById("nome").value;
-  let celular = document.getElementById("celular").value;
+  let celular = $("#celular").cleanVal();
   let email = document.getElementById("email").value;
   let nascimento = document.getElementById("nascimento").value.split('-').reverse().join('/');
   let sexo = document.getElementById("sexoMasculino").checked;
   let skillHtml = document.getElementById("skillHtml").checked;
   let skillCss = document.getElementById("skillCss").checked;
   let skillJs = document.getElementById("skillJs").checked;
+  let skillBootstrap = document.getElementById("skillBootstrap").checked;
+  
+  // Fazer validações aqui
+  
+  // TODO(daniel): Adicionar alerta de usuário mais amigável e intuitivo.
+  
+  const CPF_SIZE = 11;
+  const BR_PHONE_NUMBER_SIZE = 11;
+  const DATE_SIZE = 10;
+  const idade = nascimento.slice(-4);
+  console.log(idade);
+  console.log(sexo);
+  
+  if (cpf.length != CPF_SIZE) {
+    show_custom_alert("CPF inválido.");
+    return;
+  }
+  else if (nome.split(" ").lengh < 2) {
+    show_custom_alert("Nome inválido.");
+    return;
+  }
+  else if (celular.length != BR_PHONE_NUMBER_SIZE) {
+    show_custom_alert("Número de celular inválido.");
+    return;
+  }
+  // TODO(daniel): Fazer error checking de email mais sofisticado
+  else if (!email.includes("@")) {
+    show_custom_alert("Email inválido.");
+    return;
+  }
+  else if (nascimento.length != DATE_SIZE) {
+    show_custom_alert("Data inválida, usar este formato DD/MM/AAAA.");
+    return;
+  }
+  else if (!sexo) {
+    show_custom_alert("Sexo não selecionado.");
+    return;
+  }
+  else if (!skillHtml && !skillCss && !skillJs && !skillBootstrap) {
+    show_custom_alert("Você precisa informar no mínimo 1 habilidade.");
+    return;
+  }
+
+  let is_valid = { fail: false, alert_msg: ""};
+  if (!is_valid) { return; }
 
   // Fazer validações aqui
 
-  salvar_validacao();
-
-
-  // Fazer validações aqui
-
-  let candidato = {
+  candidato = {
     id: id!=''?id:new Date().getTime(),
     cpf: cpf,
     nome: nome,
@@ -82,11 +152,12 @@ function salvar() {
     skills: {
       html: skillHtml,
       css: skillCss,
-      js: skillJs
+      js: skillJs,
+      bootstrap: skillBootstrap
     }
   };
   
-  console.log(candidato);
+  console.log(typeof candidato.cpf);
 
   if(id!=''){
     let checkCandidato = candidatos.find(e=>e.id == candidato.id);

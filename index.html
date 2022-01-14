@@ -52,13 +52,10 @@
       </div>
     </div>
 
-
-
-
     <!-- Modal -->
     <div class="modal fade" id="candidatoModal" tabindex="-1" aria-labelledby="candidatoModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div class="modal-content" id="modal-popup">
           <div class="modal-header">
             <h5 class="modal-title" id="candidatoModalLabel">Candidato</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -76,10 +73,10 @@
                 <input type="text" id="celular" placeholder="Celular"/>
               </div>
               <div class="col">
-                <input type="text" id="email" placeholder="E-mail"/> 
+                <input type="email" id="email" placeholder="E-mail"/> 
               </div>
               <div class="col">
-                <input type="date" id="nascimento" placeholder="Data Nascimento"/> 
+                <input type="text" id="nascimento" placeholder="Data Nascimento"/> 
               </div>
             </div>
 
@@ -111,13 +108,13 @@
                   <label class="form-check-label" for="skillJs">JS</label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="skillJs">
+                  <input class="form-check-input" type="checkbox" value="" id="skillBootstrap">
                   <label class="form-check-label" for="skillBootstrap">Bootstrap</label>
                 </div>
               </div>
             </div>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer" id="modal-footer-el">
             <button type="button" onclick="fecharModal()">Fechar</button>
             <button type="button" onclick="salvar()">Salvar</button>
           </div>
