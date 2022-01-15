@@ -4,8 +4,110 @@
 }
 
 .main {
+  margin-top: 32px;
+  width: 1000px;
+  margin: auto;
+}
+
+@media screen and (max-width: 1000px) {
+  .main {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+table {
+  border: 1px solid #ccc;
+  border-collapse: collapsse;
+  font-size: 12pt;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.btn-row {
+  display: block;
+  margin: auto;
+}
+
+.search-add-container {
+  display: flex;
+}
+
+.search-col {
+  flex-grow: 1;
+  background-color: lightblue;
   
 }
+
+#search {
+  width: 100%;
+}
+
+.cpf-col,
+.celular-col {
+  white-space: nowrap;
+}
+
+h3 {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+  margin-left: auto;
+}
+
+table tr {
+  background-color: #f8f8f8;
+  border: 1px solid #add;
+  padding: .35em;
+}
+
+table th,
+table td {
+  padding: 2px;
+  text-align: center;
+}
+
+@media screen and (max-width: 800px) {
+  table {
+    border: 0;
+    font-size: 16pt;
+    width: 100%;
+  }
+  
+  h3 {
+    text-align: center;
+    font-size: 24pt;
+  }
+  
+  table thead {
+    border: none;
+    clip: react(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+  
+  table td {
+    border-bottom: 1px solid #ddd;
+    display: block;
+    text-align: right;
+  }
+  
+  table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  table td:last-child {
+    border-bottom: 0;
+  }
+}
+
 
 .main table {
   margin-top: 32px;
@@ -13,4 +115,5 @@
 
 .main table thead {
   font-weight: bold;
+  
 }
