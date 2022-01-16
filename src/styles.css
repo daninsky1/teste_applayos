@@ -3,6 +3,17 @@
   margin: 0;
 }
 
+.material-icons {
+  vertical-align: middle;
+  padding-right: 10px;
+}
+
+.d-grid > .btn {
+  font-size: 18px;    /* Workaround vertical align icon / button text*/
+}
+
+
+
 .md-36 {
   font-size: 36px;
 }
@@ -60,9 +71,8 @@ table {
   width: 100%;
 }
 
-.footer-btns {
-  display: flex;
-  height: 48px;
+#modal-btns {
+  margin: 16px;
 }
 
 .btn {
@@ -185,6 +195,10 @@ table td {
   .campos > div > input{
     height: 50px;
     font-size: 30px;
+  }
+  
+  .d-grid > button {
+    height: 50px;
   }
 }
 
