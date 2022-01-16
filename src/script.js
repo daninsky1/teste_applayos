@@ -107,12 +107,9 @@ function salvar() {
   let skillBootstrap = document.getElementById("skillBootstrap").checked;
   
   // Fazer validações aqui
-  
-  // TODO(daniel): Adicionar alerta de usuário mais amigável e intuitivo.
-  
   const CPF_SIZE = 11;
   const BR_PHONE_NUMBER_SIZE = 11;
-  const DATE_SIZE = 10;
+  const DATE_SIZE = 8;
   const MIN_AGE = 16;
   const idade = new Date().getFullYear() - nascimento_date.getFullYear();
   console.log(idade);
@@ -120,47 +117,49 @@ function salvar() {
   console.log(sexo);
   
   if (cpf.length == 0) {
-    show_custom_alert("Campo CPF obrigatório."); return;
+    show_custom_alert("Campo CPF é obrigatório."); return;
   }
   else if (cpf.length != CPF_SIZE) {
     show_custom_alert("CPF inválido."); return;
   }
   
   else if (nome.length == 0) {
-    show_custom_alert("Campo nome obrigatório."); return;
+    show_custom_alert("Campo nome é obrigatório."); return;
   }
   else if ((nome.split(" ").lengh < 2)) {
     show_custom_alert("Nome inválido. Preencha nome e sobrenome."); return;
   }
   
   else if (celular.length == 0) {
-    show_custom_alert("Campo celular obrigatório."); return;
+    show_custom_alert("Campo celular é obrigatório."); return;
   }
   else if (celular.length != BR_PHONE_NUMBER_SIZE) {
     show_custom_alert("Número de celular inválido."); return;
   }
   
-  else if (!nascimento_date || !nascimento_date.getTime()) {
+  else if (nascimento_str.length == 0) {
+    show_custom_alert("Campo data é obrigatório."); return;
+  }
+  else if ((nascimento_str.length < DATE_SIZE) || isNaN(nascimento_date.getTime())) {
     show_custom_alert("Data inválida."); return;
   }
   
   else if (idade.length == 0) {
-    show_custom_alert("Campo idade obrigatório."); return;
+    show_custom_alert("Campo idade é obrigatório."); return;
   }
   else if (idade < MIN_AGE) {
     show_custom_alert(`Você precisa ter no mínimo ${MIN_AGE} anos.`); return;
   }
-  // TODO(daniel): Fazer error checking de email mais sofisticado
   
   else if (email.length == 0) {
-    show_custom_alert("Campo email obrigatório."); return;
+    show_custom_alert("Campo email é obrigatório."); return;
   }
   else if (!email.includes("@")) {
     show_custom_alert("Email inválido."); return;
   }
   
   else if (!sexo) {
-    show_custom_alert("Seleção de sexo obrigatória."); return;
+    show_custom_alert("Seleção de sexo é obrigatória."); return;
   }
   else if (!skillHtml && !skillCss && !skillJs && !skillBootstrap) {
     show_custom_alert("Você precisa informar no mínimo 1 habilidade."); return;
@@ -232,11 +231,18 @@ function listarCandidatos() {
     let colunaEditar = document.createElement("td");
     let colunaRemover = document.createElement("td");
     
+    let colunaEditarRemover = document.createElement("td");
+    colunaEditarRemover.setAttribute("colspan", "2");
+    colunaEditarRemover.setAttribute("id", "col-edit-remove");
+    
     // Funcionalidades botão editar
     let botaoEditar = document.createElement("button");
     botaoEditar.setAttribute("type", "button");
-    botaoEditar.setAttribute("class", "bnt btn-primary d-flex justify-content-center align-content-between btn-row");
-    botaoEditar.innerHTML = '<i class="material-icons">edit</i>';
+    botaoEditar.setAttribute("class", "btn");
+    botaoEditar.setAttribute("id", "btn-edit");
+    botaoEditar.setAttribute("style", "background-color: lightblue;");
+    botaoEditar.innerHTML = '<i class="material-icons md-36" style="background-color: pink;">edit</i>';
+    colunaEditarRemover.appendChild(botaoEditar);
     botaoEditar.onclick = function () {
       console.log('editar');
       abrirModal(candidato);
@@ -245,14 +251,17 @@ function listarCandidatos() {
     // Funcionalidades botão remover
     let botaoRemover = document.createElement("button");
     botaoRemover.setAttribute("type", "button");
-    botaoRemover.setAttribute("class", "bnt btn-danger d-flex justify-content-center align-content-between btn-row");
-    botaoRemover.innerHTML = '<i class="material-icons">highlight_off</i>';
+    botaoRemover.setAttribute("class", "btn");
+    botaoRemover.setAttribute("id", "btn-remove");
+    botaoRemover.setAttribute("style", "background-color: lightblue;");
+    botaoRemover.innerHTML = '<i class="material-icons md-36" style="background-color:pink;">highlight_off</i>';
     botaoRemover.onclick = function () {
       candidatos.splice(candidatos.indexOf(candidato), 1);
       localStorage.setItem("localStorageCandidatos", JSON.stringify(candidatos));
       listarCandidatos();
     }
-
+    colunaEditarRemover.appendChild(botaoRemover);
+    
     let arrSkills = [];
     if(candidato.skills.html){
       arrSkills.push('HTML');
@@ -274,8 +283,10 @@ function listarCandidatos() {
     colunaSexo.appendChild(document.createTextNode(candidato.sexo));
     colunaNascimento.appendChild(document.createTextNode(candidato.nascimento));
     colunaSkills.appendChild(document.createTextNode(arrSkills.join(', ')));
-    colunaEditar.appendChild(botaoEditar);
-    colunaRemover.appendChild(botaoRemover);
+    colunaEditarRemover.appendChild(botaoEditar);
+    colunaEditarRemover.appendChild(botaoRemover);
+    //colunaEditar.appendChild(botaoEditar);
+    //colunaRemover.appendChild(botaoRemover);
 
     linha.appendChild(colunaCpf);
     linha.appendChild(colunaNome);
@@ -284,8 +295,9 @@ function listarCandidatos() {
     linha.appendChild(colunaSexo);
     linha.appendChild(colunaNascimento);
     linha.appendChild(colunaSkills);
-    linha.appendChild(colunaEditar);
-    linha.appendChild(colunaRemover);
+    linha.appendChild(colunaEditarRemover);
+    //linha.appendChild(colunaEditar);
+    //linha.appendChild(colunaRemover);
 
     tabela.appendChild(linha);
   }

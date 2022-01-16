@@ -3,6 +3,10 @@
   margin: 0;
 }
 
+.md-36 {
+  font-size: 36px;
+}
+
 .main {
   margin-top: 32px;
   width: 1000px;
@@ -16,6 +20,37 @@
   }
 }
 
+.modal-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-body > .row {
+  margin: 5px;
+}
+
+.campos {
+  display: grid;
+  gap: 10px;
+}
+
+.campos > div > input{
+  border: none;
+  border-bottom: 2px solid black;
+  width: 100%;
+  font-family: 'Courier New', Courier, monospace;
+  /* height: 100px; */
+}
+
+input:-webkit-autofill::first-line {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+}
+
+input:focus {
+  outline: none;
+}
+
 table {
   border: 1px solid #ccc;
   border-collapse: collapsse;
@@ -25,6 +60,15 @@ table {
   width: 100%;
 }
 
+.footer-btns {
+  display: flex;
+  height: 48px;
+}
+
+.btn {
+  border: none;
+}
+
 .btn-row {
   display: block;
   margin: auto;
@@ -32,16 +76,16 @@ table {
 
 .search-add-container {
   display: flex;
+  gap: 12px;
 }
 
 .search-col {
   flex-grow: 1;
-  background-color: lightblue;
-  
 }
 
 #search {
   width: 100%;
+  height: 100%
 }
 
 .cpf-col,
@@ -56,17 +100,44 @@ h3 {
 }
 
 table tr {
-  background-color: #f8f8f8;
   border: 1px solid #add;
   padding: .35em;
+  vertical-align: middle;
 }
 
 table th,
 table td {
   padding: 2px;
   text-align: center;
+  height: 50px;
 }
 
+#col-edit-remover:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+#btn-edit {
+  vertical-align: middle;
+  text-align: center;
+  width: 50%;
+  height: 100%;
+  cursor: pointer;
+}
+
+#btn-remove {
+  vertical-align: middle;
+  text-align: center;
+  width: 50%;
+  height: 100%;
+}
+
+#btn-remove:hover {
+  color: red;
+}
+
+/*1080px*/
 @media screen and (max-width: 800px) {
   table {
     border: 0;
@@ -105,6 +176,11 @@ table td {
   
   table td:last-child {
     border-bottom: 0;
+  }
+  
+  .campos > div > input{
+    height: 50px;
+    font-size: 30px;
   }
 }
 

@@ -27,7 +27,7 @@
           </div>
   
           <div class="btn-add-col">
-            <button type="button" class="btn-add btn-success d-flex justify-content-center align-content-between btn-row" onclick="abrirModal()"><i class="material-icons">add</i>Candidato</button>
+            <button type="button" class="btn btn-add btn-success d-flex justify-content-center align-content-between btn-row" onclick="abrirModal()"><i class="material-icons">add</i>Candidato</button>
           </div>
         </div>
   
@@ -41,8 +41,7 @@
               <td>Sexo</td>
               <td>Data Nascimento</td>
               <td>Habilidades</td>
-              <td>Editar</td>
-              <td>Remover</td>
+              <td colspan="2">Editar Remover</td>
             </tr>
           </thead>
   
@@ -59,10 +58,10 @@
         <div class="modal-content" id="modal-popup">
           <div class="modal-header">
             <h5 class="modal-title" id="candidatoModalLabel">Candidato</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <div class="row mb-3">
+            <div class="row campos">
               <input type="hidden" id="id"/>
               <div class="col">
                 <input type="text" id="cpf" placeholder="CPF"/>
@@ -81,7 +80,7 @@
               </div>
             </div>
 
-            <div class="row mb-3">
+            <div class="row">
               <div class="col">
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="sexo" id="sexoMasculino" checked>
@@ -115,9 +114,13 @@
               </div>
             </div>
           </div>
-          <div class="modal-footer" id="modal-footer-el">
-            <button type="button" onclick="fecharModal()">Fechar</button>
-            <button type="button" onclick="salvar()">Salvar</button>
+          <div class="footer-btns">
+            <div>
+              <button type="button" class="btn btn-danger btn-block d-flex justify-content-center align-content-betweenw" onclick="fecharModal()"><i class="material-icons">close</i>Fechar</button>
+            </div>
+            <div>
+              <button type="button" class="btn btn-success btn-block d-flex justify-content-center align-content-between" onclick="salvar()"><i class="material-icons">save</i>Salvar</button>
+            </div>
           </div>
         </div>
       </div>
