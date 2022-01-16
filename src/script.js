@@ -3,20 +3,20 @@ $(document).ready(function() {
   $("#celular").mask("(00) 00000-0000");
   $("#nascimento").mask("00/00/0000", {placeholder: "DD/MM/AAAA"});
   
-  $(".cpf-col").mask("000.000.000-00");
-  $(".celular-col").mask("(00) 00000-0000");
-  $(".nascimento-col").mask("00/00/0000", {placeholder: "DD/MM/AAAA"});
 });
 
-let candidatos = [
-  { id: "1", cpf: "42604610876", nome: "Lucas Vieira Dias", celular: "11957770782", email: "lvdias98@gmail.com", sexo: "Masculino", nascimento: "01/12/1998", skills: { html: true, css: true, js: true } },
-  { id: "2", cpf: "42604610876", nome: "Nelson Santana", celular: "11957770782", email: "lvdias98@gmail.com", sexo: "Masculino", nascimento: "01/12/1998", skills: { html: true, css: true, js: true } },
-];
+let candidatos = [];
+
+//let testeCandidatos = [
+//  { id: "1", cpf: "42604610876", nome: "Lucas Vieira Dias", celular: "11957770782", email: "lvdias98@gmail.com", sexo: "Masculino", nascimento: "01/12/1998", skills: { html: true, css: true, js: true } },
+//  { id: "2", cpf: "42604610876", nome: "Nelson Santana", celular: "11957770782", email: "lvdias98@gmail.com", sexo: "Masculino", nascimento: "01/12/1998", skills: { html: true, css: true, js: true } },
+//];
 
 
 // NOTE: append local storage em candidatos
-candidatos.push(...(localStorage.getItem("localStorageCandidatos") !== null)
-  ? JSON.parse(localStorage.getItem("localStorageCandidatos")) : []);
+if (localStorage.getItem("localStorageCandidatos") !== null) {
+  candidatos.push(...JSON.parse(localStorage.getItem("localStorageCandidatos")));
+}
 
 function abrirModal(candidato) {
   if (candidato) {
@@ -34,8 +34,6 @@ function abrirModal(candidato) {
     document.getElementById("skillHtml").checked = candidato.skills.html;
     document.getElementById("skillCss").checked = candidato.skills.css;
     document.getElementById("skillJs").checked = candidato.skills.js;
-
-    mask_form();
   }
 
   $('#candidatoModal').modal('show');
@@ -72,18 +70,6 @@ function show_custom_alert(alert_msg)
   alert_parent.insertBefore(custom_alert, document.getElementById("modal-footer-el"));
 }
 
-function local_storage_add_candidato()
-{
-  localStorage.setItem("candidato")
-  
-
-}
-
-function local_storage_remove_candidato()
-{
-
-}
-
 function close_custom_alert()
 {
   let custom_alert = document.getElementById("custom-alert");
@@ -98,8 +84,8 @@ function salvar() {
   let nome = document.getElementById("nome").value;
   let celular = $("#celular").cleanVal();
   let email = document.getElementById("email").value;
-  let nascimento_str = $("#nascimento").cleanVal();
-  let nascimento_date = new Date(nascimento_str);
+  let nascimento_str = document.getElementById("nascimento").value;
+  let nascimento_date = new Date(`${nascimento_str.substring(0,2)}/${nascimento_str.substring(3,5)}/${nascimento_str.substring(6)}`);
   let sexo = document.getElementById("sexoMasculino").checked;
   let skillHtml = document.getElementById("skillHtml").checked;
   let skillCss = document.getElementById("skillCss").checked;
@@ -109,53 +95,50 @@ function salvar() {
   // Fazer validações aqui
   const CPF_SIZE = 11;
   const BR_PHONE_NUMBER_SIZE = 11;
-  const DATE_SIZE = 8;
+  const DATE_STR_SIZE = 10;
   const MIN_AGE = 16;
-  const idade = new Date().getFullYear() - nascimento_date.getFullYear();
-  console.log(idade);
+  const minDate = new Date();
+  minDate.setFullYear(minDate.getFullYear() - MIN_AGE);   // 16 anos atrás
+  nome = nome.trim();
+  console.log(minDate);
   console.log(nascimento_date);
-  console.log(sexo);
   
-  if (cpf.length == 0) {
+  if (!cpf) {
     show_custom_alert("Campo CPF é obrigatório."); return;
   }
   else if (cpf.length != CPF_SIZE) {
     show_custom_alert("CPF inválido."); return;
   }
   
-  else if (nome.length == 0) {
+  else if (!nome) {
     show_custom_alert("Campo nome é obrigatório."); return;
   }
-  else if ((nome.split(" ").lengh < 2)) {
+  else if ((nome.match(/[0-9]/)) || (nome.split(" ").length < 2)) {
     show_custom_alert("Nome inválido. Preencha nome e sobrenome."); return;
   }
   
-  else if (celular.length == 0) {
+  else if (!celular) {
     show_custom_alert("Campo celular é obrigatório."); return;
   }
   else if (celular.length != BR_PHONE_NUMBER_SIZE) {
     show_custom_alert("Número de celular inválido."); return;
   }
   
-  else if (nascimento_str.length == 0) {
-    show_custom_alert("Campo data é obrigatório."); return;
-  }
-  else if ((nascimento_str.length < DATE_SIZE) || isNaN(nascimento_date.getTime())) {
-    show_custom_alert("Data inválida."); return;
-  }
-  
-  else if (idade.length == 0) {
-    show_custom_alert("Campo idade é obrigatório."); return;
-  }
-  else if (idade < MIN_AGE) {
-    show_custom_alert(`Você precisa ter no mínimo ${MIN_AGE} anos.`); return;
-  }
-  
-  else if (email.length == 0) {
+  else if (!email) {
     show_custom_alert("Campo email é obrigatório."); return;
   }
   else if (!email.includes("@")) {
     show_custom_alert("Email inválido."); return;
+  }
+  
+  else if (!nascimento_str) {
+    show_custom_alert("Campo data é obrigatório."); return;
+  }
+  else if ((nascimento_str.length < DATE_STR_SIZE) || (nascimento_date == "Invalid Date")) {
+    show_custom_alert("Data inválida."); return;
+  }
+  else if (nascimento_date > minDate) {
+    show_custom_alert("Você precisa ter no mínimo 16 anos.");
   }
   
   else if (!sexo) {
@@ -208,6 +191,7 @@ function listarCandidatos() {
   let tabela = document.getElementById("table-body");
   tabela.innerHTML = '';
 
+
   for (let candidato of candidatos) {
     let linha = document.createElement("tr");
 
@@ -240,21 +224,21 @@ function listarCandidatos() {
     botaoEditar.setAttribute("type", "button");
     botaoEditar.setAttribute("class", "btn");
     botaoEditar.setAttribute("id", "btn-edit");
-    botaoEditar.setAttribute("style", "background-color: lightblue;");
-    botaoEditar.innerHTML = '<i class="material-icons md-36" style="background-color: pink;">edit</i>';
-    colunaEditarRemover.appendChild(botaoEditar);
+    //botaoEditar.setAttribute("style", "background-color: lightblue;");
+    botaoEditar.innerHTML = '<i class="material-icons md-36">edit</i>';
     botaoEditar.onclick = function () {
       console.log('editar');
       abrirModal(candidato);
     }
+    colunaEditarRemover.appendChild(botaoEditar);
 
     // Funcionalidades botão remover
     let botaoRemover = document.createElement("button");
     botaoRemover.setAttribute("type", "button");
     botaoRemover.setAttribute("class", "btn");
     botaoRemover.setAttribute("id", "btn-remove");
-    botaoRemover.setAttribute("style", "background-color: lightblue;");
-    botaoRemover.innerHTML = '<i class="material-icons md-36" style="background-color:pink;">highlight_off</i>';
+    //botaoRemover.setAttribute("style", "background-color: lightblue;");
+    botaoRemover.innerHTML = '<i class="material-icons md-36">highlight_off</i>';
     botaoRemover.onclick = function () {
       candidatos.splice(candidatos.indexOf(candidato), 1);
       localStorage.setItem("localStorageCandidatos", JSON.stringify(candidatos));
@@ -301,6 +285,9 @@ function listarCandidatos() {
 
     tabela.appendChild(linha);
   }
+  $(".cpf-col").mask("000.000.000-00");
+  $(".celular-col").mask("(00) 00000-0000");
+  $(".nascimento-col").mask("00/00/0000", {placeholder: "DD/MM/AAAA"});
 }
 
 listarCandidatos();

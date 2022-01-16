@@ -100,7 +100,7 @@ h3 {
 }
 
 table tr {
-  border: 1px solid #add;
+  border: 1px solid lightgray;
   padding: .35em;
   vertical-align: middle;
 }
@@ -135,6 +135,10 @@ table td {
 
 #btn-remove:hover {
   color: red;
+}
+
+#btn-edit:hover {
+  color: lightblue;
 }
 
 /*1080px*/
