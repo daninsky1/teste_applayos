@@ -85,7 +85,7 @@ function salvar() {
   let celular = $("#celular").cleanVal();
   let email = document.getElementById("email").value;
   let nascimento_str = document.getElementById("nascimento").value;
-  let nascimento_date = new Date(`${nascimento_str.substring(0,2)}/${nascimento_str.substring(3,5)}/${nascimento_str.substring(6)}`);
+  let nascimento_date = new Date(`${nascimento_str.substring(3,5)}/${nascimento_str.substring(0,2)}/${nascimento_str.substring(6)}`);
   let sexo = document.getElementById("sexoMasculino").checked;
   let skillHtml = document.getElementById("skillHtml").checked;
   let skillCss = document.getElementById("skillCss").checked;
