@@ -2,7 +2,6 @@ $(document).ready(function() {
   $("#cpf").mask("000.000.000-00");
   $("#celular").mask("(00) 00000-0000");
   $("#nascimento").mask("00/00/0000", {placeholder: "DD/MM/AAAA"});
-  
 });
 
 let candidatos = [];
@@ -30,7 +29,8 @@ function abrirModal(candidato) {
     }else{
       document.getElementById("sexoFeminino").checked = true;
     }
-    document.getElementById("nascimento").value = candidato.nascimento.split('/').reverse().join('-');
+    document.getElementById("nascimento").value = candidato.nascimento;
+    console.log(candidato);
     document.getElementById("skillHtml").checked = candidato.skills.html;
     document.getElementById("skillCss").checked = candidato.skills.css;
     document.getElementById("skillJs").checked = candidato.skills.js;
@@ -100,7 +100,7 @@ function salvar() {
   const minDate = new Date();
   minDate.setFullYear(minDate.getFullYear() - MIN_AGE);   // 16 anos atrás
   nome = nome.trim();
-  console.log(minDate);
+  console.log(nascimento_str);
   console.log(nascimento_date);
   
   if (!cpf) {
@@ -168,6 +168,7 @@ function salvar() {
   };
   
   console.log(typeof candidato.cpf);
+  console.log(candidato.nascimento);
 
   if(id!=''){
     let checkCandidato = candidatos.find(e=>e.id == candidato.id);
