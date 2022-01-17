@@ -84,6 +84,7 @@ function validadeCpf(cpf)
   if (typeof cpf != "string") { console.log("must be string."); }
   const CPF_SIZE = 11;
   console.log(cpf);
+  const CPF_SIZE = 11;
   if (cpf.length != CPF_SIZE) { return false; }
   if ((cpf[7] == 1) && (cpf[8] != 0)) { return false; }
   
