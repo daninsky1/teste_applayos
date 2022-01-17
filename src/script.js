@@ -78,6 +78,36 @@ function close_custom_alert()
   }
 }
 
+function validadeCpf(cpf)
+{
+  // NOTE: return true if cpf is valid
+  if (typeof cpf != "string") { console.log("must be string."); }
+  const CPF_SIZE = 11;
+  console.log(cpf);
+  if (cpf.length != CPF_SIZE) { return false; }
+  if ((cpf[7] == 1) && (cpf[8] != 0)) { return false; }
+  
+  let d = cpf.split("");
+  d.splice(9); d.reverse();
+  //console.log(d)
+  
+  let v1 = 0;
+  let v2 = 0;
+  
+  for (let i = 0; i < 9; ++i) {
+    v1 = v1 + d[i] * (9 - (i % 10));
+    v2 = v2 + d[i] * (9 - ((i + 1) % 10));
+  }
+  
+  v1 = (v1 % 11) % 10;
+  v2 = (v2 + v1 * 9) % 11 % 10;
+  
+  //console.log(`v1 = ${v1}`);
+  //console.log(`v2 = ${v2}`);
+  if ((v1 != cpf[9]) || (v2 != cpf[10])) return false;
+  return true;
+}
+
 function salvar() {
   let id = document.getElementById("id").value;
   let cpf = $("#cpf").cleanVal();
@@ -93,7 +123,6 @@ function salvar() {
   let skillBootstrap = document.getElementById("skillBootstrap").checked;
   
   // Fazer validações aqui
-  const CPF_SIZE = 11;
   const BR_PHONE_NUMBER_SIZE = 11;
   const DATE_STR_SIZE = 10;
   const MIN_AGE = 16;
@@ -106,7 +135,7 @@ function salvar() {
   if (!cpf) {
     show_custom_alert("Campo CPF é obrigatório."); return;
   }
-  else if (cpf.length != CPF_SIZE) {
+  else if (!validadeCpf(cpf)) {
     show_custom_alert("CPF inválido."); return;
   }
   
