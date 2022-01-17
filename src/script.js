@@ -212,20 +212,19 @@ function listarCandidatos() {
     colunaNascimento.setAttribute("class", "nascimento-col")
     let colunaSkills = document.createElement("td");
     colunaSkills.setAttribute("data-label", "skills")
-    let colunaEditar = document.createElement("td");
-    let colunaRemover = document.createElement("td");
-    
     let colunaEditarRemover = document.createElement("td");
+    
     colunaEditarRemover.setAttribute("colspan", "2");
+    colunaEditarRemover.setAttribute("class", "d-flex btn-group align-content-between");
     colunaEditarRemover.setAttribute("id", "col-edit-remove");
     
     // Funcionalidades botão editar
     let botaoEditar = document.createElement("button");
     botaoEditar.setAttribute("type", "button");
-    botaoEditar.setAttribute("class", "btn");
+    botaoEditar.setAttribute("class", "btn btn-primary justify-content-center align-content-between");
     botaoEditar.setAttribute("id", "btn-edit");
     //botaoEditar.setAttribute("style", "background-color: lightblue;");
-    botaoEditar.innerHTML = '<i class="material-icons md-36">edit</i>';
+    botaoEditar.innerHTML = '<i class="material-icons md-36 md-right-padding">edit</i>Editar';
     botaoEditar.onclick = function () {
       console.log('editar');
       abrirModal(candidato);
@@ -235,10 +234,10 @@ function listarCandidatos() {
     // Funcionalidades botão remover
     let botaoRemover = document.createElement("button");
     botaoRemover.setAttribute("type", "button");
-    botaoRemover.setAttribute("class", "btn");
+    botaoRemover.setAttribute("class", "btn btn-danger");
     botaoRemover.setAttribute("id", "btn-remove");
     //botaoRemover.setAttribute("style", "background-color: lightblue;");
-    botaoRemover.innerHTML = '<i class="material-icons md-36">highlight_off</i>';
+    botaoRemover.innerHTML = '<i class="material-icons md-36 md-right-padding">highlight_off</i>Remover';
     botaoRemover.onclick = function () {
       candidatos.splice(candidatos.indexOf(candidato), 1);
       localStorage.setItem("localStorageCandidatos", JSON.stringify(candidatos));
