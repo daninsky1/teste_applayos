@@ -54,6 +54,8 @@ function fecharModal() {
   document.getElementById("skillHtml").checked = false;
   document.getElementById("skillCss").checked = false;
   document.getElementById("skillJs").checked = false;
+  
+  closeCustomAlert();
 }
 
 function showCustomAlert(alertMsg)
@@ -69,7 +71,7 @@ function showCustomAlert(alertMsg)
   alertParent.insertBefore(customAlert, document.getElementById("modal-footer-el"));
 }
 
-function close_custom_alert()
+function closeCustomAlert()
 {
   let customAlert = document.getElementById("custom-alert");
   if (customAlert) {
@@ -96,7 +98,7 @@ function validateCandidato(candidato)
   console.log(keys);
   for (let key of keys) {
     if (!candidato[key]) {
-      showCustomAlert(`Campo ${key} é obrigatório.`); return;
+      showCustomAlert(`Campo ${key} é obrigatório.`); return false;
     }
   }
   let isSkill = false;
@@ -107,7 +109,7 @@ function validateCandidato(candidato)
     }
   }
   if (!isSkill) {
-    showCustomAlert("Você precisa informar no mínimo 1 habilidade."); return;
+    showCustomAlert("Você precisa informar no mínimo 1 habilidade."); return false;
   }
  /* 
   if (!cpf) {
@@ -207,7 +209,7 @@ function salvar() {
   };
   
   // Fazer validações aqui
-  validateCandidato(testeCandidato);
+  if (!validateCandidato(testeCandidato)) { return };
   // Fazer validações aqui
 
   candidato = {
@@ -220,7 +222,6 @@ function salvar() {
     nascimento: testeCandidato["nascimento"],
     skills: testeCandidato["skills"]
   };
-  
   
   if(id!=''){
     let checkCandidato = candidatos.find(e=>e.id == candidato.id);
