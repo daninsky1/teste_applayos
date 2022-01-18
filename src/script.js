@@ -141,7 +141,7 @@ function validateCandidato(candidato)
 function validadeCpf(cpf)
 {
   // NOTE: return true if cpf is valid
-  if (typeof cpf != "string") { console.log("must be string."); }
+  if (typeof cpf != "string") { throw new TypeError("is not a string."); }
   const CPF_SIZE = 11;
   if (cpf.length != CPF_SIZE) { return false; }
   if ((cpf[7] == 1) && (cpf[8] != 0)) { return false; }
@@ -166,7 +166,7 @@ function validadeCpf(cpf)
 
 function validateEmail(email)
 {
-  if (typeof email != "string") { console.log("must be string."); }
+  if (typeof email != "string") { throw new TypeError("is not a string."); }
   let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   //let re = /^([a-zA-Z0-9\._]+)@([a-zA-Z0-9])+.([a-z]+)(.[a-z]+)?$/
   
@@ -191,7 +191,6 @@ function salvar() {
       bootstrap: document.getElementById("skillBootstrap").checked,
     }
   };
-  console.log(document.getElementById("sexoMasculino").checked);
   
   // Fazer validações aqui
   if (!validateCandidato(testeCandidato)) { return };
