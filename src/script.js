@@ -1,3 +1,8 @@
+$(document).ready(function() {
+  $("#cpf").mask("000.000.000-00");
+  $("#celular").mask("(00) 00000-0000");
+  $("#nascimento").mask("00/00/0000", {placeholder: "DD/MM/AAAA"});
+});
 let candidatos = [];
 
 //let testeCandidatos = [
@@ -15,31 +20,22 @@ function abrirModal(candidato) {
   console.log(candidato);
   if (candidato) {
     document.getElementById("id").value = candidato.id;
-    document.getElementById("cpf").value = candidato.cpf;
+    document.getElementById("cpf").value = $("#cpf").masked(candidato.cpf);
     document.getElementById("nome").value = candidato.nome;
-    document.getElementById("celular").value = candidato.celular;
+    document.getElementById("celular").value = $("#celular").masked(candidato.celular);
     document.getElementById("email").value = candidato.email;
     if(candidato.sexo=='Masculino'){
       document.getElementById("sexoMasculino").checked = true;
     }else{
       document.getElementById("sexoFeminino").checked = true;
     }
-    document.getElementById("nascimento").value = candidato.nascimento;
+    document.getElementById("nascimento").value = $("#nascimento").masked(candidato.nascimento);
     document.getElementById("skillHtml").checked = candidato.skills.html;
     document.getElementById("skillCss").checked = candidato.skills.css;
     document.getElementById("skillJs").checked = candidato.skills.js;
     document.getElementById("skillBootstrap").checked = candidato.skills.bootstrap;
   }
   
-  $(document).ready(function() {
-    $("#cpf").mask("000.000.000-00");
-    $("#celular").mask("(00) 00000-0000");
-    $("#nascimento").mask("00/00/0000", {placeholder: "DD/MM/AAAA"});
-  });
-  $("#cpf").mask("000.000.000-00");
-  $("#celular").mask("(00) 00000-0000");
-  $("#nascimento").mask("00/00/0000", {placeholder: "DD/MM/AAAA"});
-
   $('#candidatoModal').modal('show');
 }
 
