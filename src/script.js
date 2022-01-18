@@ -1,4 +1,3 @@
-
 let candidatos = [];
 
 //let testeCandidatos = [
@@ -13,6 +12,7 @@ if (localStorage.getItem("localStorageCandidatos") !== null) {
 }
 
 function abrirModal(candidato) {
+  console.log(candidato);
   if (candidato) {
     document.getElementById("id").value = candidato.id;
     document.getElementById("cpf").value = candidato.cpf;
@@ -28,6 +28,7 @@ function abrirModal(candidato) {
     document.getElementById("skillHtml").checked = candidato.skills.html;
     document.getElementById("skillCss").checked = candidato.skills.css;
     document.getElementById("skillJs").checked = candidato.skills.js;
+    document.getElementById("skillBootstrap").checked = candidato.skills.bootstrap;
   }
   
   $(document).ready(function() {
@@ -35,6 +36,9 @@ function abrirModal(candidato) {
     $("#celular").mask("(00) 00000-0000");
     $("#nascimento").mask("00/00/0000", {placeholder: "DD/MM/AAAA"});
   });
+  $("#cpf").mask("000.000.000-00");
+  $("#celular").mask("(00) 00000-0000");
+  $("#nascimento").mask("00/00/0000", {placeholder: "DD/MM/AAAA"});
 
   $('#candidatoModal').modal('show');
 }
@@ -296,7 +300,7 @@ function listarCandidatos() {
     if(candidato.skills.js){
       arrSkills.push('JS');
     }
-    if(candidato.skills.js){
+    if(candidato.skills.bootstrap){
       arrSkills.push('Bootstrap');
     }
 
