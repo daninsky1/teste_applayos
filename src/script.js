@@ -10,8 +10,6 @@ let candidatos = [];
 //  { id: "2", cpf: "42604610876", nome: "Nelson Santana", celular: "11957770782", email: "lvdias98@gmail.com", sexo: "Masculino", nascimento: "01/12/1998", skills: { html: true, css: true, js: true } },
 //];
 
-
-// NOTE: append local storage em candidatos
 if (localStorage.getItem("localStorageCandidatos") !== null) {
   candidatos.push(...JSON.parse(localStorage.getItem("localStorageCandidatos")));
 }
@@ -127,7 +125,6 @@ function validateCandidato(candidato)
   else if (candidato["celular"].length != BR_PHONE_NUMBER_SIZE) {
     showCustomAlert("Número de celular inválido."); return false;
   }
-  
   else if (!validateEmail(candidato["email"])) {
     showCustomAlert("Email inválido."); return false;
   }
@@ -194,6 +191,7 @@ function salvar() {
       bootstrap: document.getElementById("skillBootstrap").checked,
     }
   };
+  console.log(document.getElementById("sexoMasculino").checked);
   
   // Fazer validações aqui
   if (!validateCandidato(testeCandidato)) { return };
@@ -205,7 +203,7 @@ function salvar() {
     nome: testeCandidato["nome"],
     celular: testeCandidato["celular"],
     email: testeCandidato["email"],
-    sexo: testeCandidato["sexo"]?'Masculino':'Feminino',
+    sexo: testeCandidato["sexo"],
     nascimento: testeCandidato["data de nascimento"],
     skills: testeCandidato["skills"]
   };
