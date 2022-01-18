@@ -129,10 +129,10 @@ function validateCandidato(candidato)
     showCustomAlert("Email inválido."); return false;
   }
   else if ((candidato["data de nascimento"].length < DATE_STR_SIZE) || (nascimentoDate == "Invalid Date")) {
-    showCustomAlert("Data inválida."); return;
+    showCustomAlert("Data inválida."); return false;
   }
   else if (nascimentoDate > minDate) {
-    showCustomAlert("Você precisa ter no mínimo 16 anos.");
+    showCustomAlert("Você precisa ter no mínimo 16 anos."); return false;
   }
   
  return true;
