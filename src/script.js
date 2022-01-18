@@ -30,7 +30,6 @@ function abrirModal(candidato) {
       document.getElementById("sexoFeminino").checked = true;
     }
     document.getElementById("nascimento").value = candidato.nascimento;
-    console.log(candidato);
     document.getElementById("skillHtml").checked = candidato.skills.html;
     document.getElementById("skillCss").checked = candidato.skills.css;
     document.getElementById("skillJs").checked = candidato.skills.js;
@@ -57,83 +56,61 @@ function fecharModal() {
   document.getElementById("skillJs").checked = false;
 }
 
-function show_custom_alert(alert_msg)
+function showCustomAlert(alertMsg)
 {
   if (document.getElementById("custom-alert")) { close_custom_alert(); }
-  let custom_alert = document.createElement("div");
-  custom_alert.setAttribute("class", "alert alert-danger alert-dismissible fade show");
-  custom_alert.setAttribute("id", "custom-alert");
-  custom_alert.setAttribute("role", "alert");
-  custom_alert.innerHTML = `<strong>${alert_msg}</strong>
+  let customAlert = document.createElement("div");
+  customAlert.setAttribute("class", "alert alert-danger alert-dismissible fade show");
+  customAlert.setAttribute("id", "custom-alert");
+  customAlert.setAttribute("role", "alert");
+  customAlert.innerHTML = `<strong>${alertMsg}</strong>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`;
-  let alert_parent = document.getElementById("modal-popup");
-  alert_parent.insertBefore(custom_alert, document.getElementById("modal-footer-el"));
+  let alertParent = document.getElementById("modal-popup");
+  alertParent.insertBefore(customAlert, document.getElementById("modal-footer-el"));
 }
 
 function close_custom_alert()
 {
-  let custom_alert = document.getElementById("custom-alert");
-  if (custom_alert) {
-    custom_alert.remove();
+  let customAlert = document.getElementById("custom-alert");
+  if (customAlert) {
+    customAlert.remove();
   }
 }
 
-function validadeCpf(cpf)
+function validateCandidato(candidato)
 {
-  // NOTE: return true if cpf is valid
-  if (typeof cpf != "string") { console.log("must be string."); }
-  const CPF_SIZE = 11;
-  const CPF_SIZE = 11;
-  if (cpf.length != CPF_SIZE) { return false; }
-  if ((cpf[7] == 1) && (cpf[8] != 0)) { return false; }
-  
-  let d = cpf.split("");
-  d.splice(9); d.reverse();
-  //console.log(d)
-  
-  let v1 = 0;
-  let v2 = 0;
-  
-  for (let i = 0; i < 9; ++i) {
-    v1 = v1 + d[i] * (9 - (i % 10));
-    v2 = v2 + d[i] * (9 - ((i + 1) % 10));
-  }
-  
-  v1 = (v1 % 11) % 10;
-  v2 = (v2 + v1 * 9) % 11 % 10;
-  
-  //console.log(`v1 = ${v1}`);
-  //console.log(`v2 = ${v2}`);
-  if ((v1 != cpf[9]) || (v2 != cpf[10])) return false;
-  return true;
-}
-
-function salvar() {
-  let id = document.getElementById("id").value;
-  let cpf = $("#cpf").cleanVal();
-  let nome = document.getElementById("nome").value;
-  let celular = $("#celular").cleanVal();
-  let email = document.getElementById("email").value;
-  let nascimento_str = document.getElementById("nascimento").value;
-  let nascimento_date = new Date(`${nascimento_str.substring(3,5)}/${nascimento_str.substring(0,2)}/${nascimento_str.substring(6)}`);
-  let sexo = document.getElementById("sexoMasculino").checked;
-  let skillHtml = document.getElementById("skillHtml").checked;
-  let skillCss = document.getElementById("skillCss").checked;
-  let skillJs = document.getElementById("skillJs").checked;
-  let skillBootstrap = document.getElementById("skillBootstrap").checked;
-  
-  // Fazer validações aqui
   const BR_PHONE_NUMBER_SIZE = 11;
   const DATE_STR_SIZE = 10;
   const MIN_AGE = 16;
   const minDate = new Date();
   minDate.setFullYear(minDate.getFullYear() - MIN_AGE);   // 16 anos atrás
-  nome = nome.trim();
-  console.log(nascimento_str);
-  console.log(nascimento_date);
   
+  //console.log(candidato);
+  candidato["nome"] = candidato["nome"].trim();
+  candidato["email"] = candidato["email"].trim();
+  let nascimentoDate = new Date(`${candidato["nascimento"].substring(3,5)}/${candidato["nascimento"].substring(0,2)}/${candidato["nascimento"].substring(6)}`);
+  
+  // Check fields fill
+  let keys = Object.keys(candidato);
+  keys.pop();
+  console.log(keys);
+  for (let key of keys) {
+    if (!candidato[key]) {
+      showCustomAlert(`Campo ${key} é obrigatório.`); return;
+    }
+  }
+  let isSkill = false;
+  for (let skill in candidato["skills"]) {
+    if (candidato["skills"][skill]) {
+      isSkill = true;
+      break;
+    }
+  }
+  if (!isSkill) {
+    showCustomAlert("Você precisa informar no mínimo 1 habilidade."); return;
+  }
+ /* 
   if (!cpf) {
-    show_custom_alert("Campo CPF é obrigatório."); return;
   }
   else if (!validadeCpf(cpf)) {
     show_custom_alert("CPF inválido."); return;
@@ -156,7 +133,7 @@ function salvar() {
   else if (!email) {
     show_custom_alert("Campo email é obrigatório."); return;
   }
-  else if (!email.includes("@")) {
+  else if (!validateEmail(email)) {
     show_custom_alert("Email inválido."); return;
   }
   
@@ -173,32 +150,78 @@ function salvar() {
   else if (!sexo) {
     show_custom_alert("Seleção de sexo é obrigatória."); return;
   }
-  else if (!skillHtml && !skillCss && !skillJs && !skillBootstrap) {
-    show_custom_alert("Você precisa informar no mínimo 1 habilidade."); return;
+  */
+}
+
+function validadeCpf(cpf)
+{
+  // NOTE: return true if cpf is valid
+  if (typeof cpf != "string") { console.log("must be string."); }
+  const CPF_SIZE = 11;
+  if (cpf.length != CPF_SIZE) { return false; }
+  if ((cpf[7] == 1) && (cpf[8] != 0)) { return false; }
+  
+  let d = cpf.split("");
+  d.splice(9); d.reverse();
+  
+  let v1 = 0;
+  let v2 = 0;
+  
+  for (let i = 0; i < 9; ++i) {
+    v1 = v1 + d[i] * (9 - (i % 10));
+    v2 = v2 + d[i] * (9 - ((i + 1) % 10));
   }
+  
+  v1 = (v1 % 11) % 10;
+  v2 = (v2 + v1 * 9) % 11 % 10;
+  
+  if ((v1 != cpf[9]) || (v2 != cpf[10])) return false;
+  return true;
+}
 
+function validateEmail(email)
+{
+  if (typeof email != "string") { console.log("must be string."); }
+  let re = /^([a-zA-Z0-9\._]+)@([a-zA-Z0-9])+.([a-z]+)(.[a-z]+)?$/
+  
+  if (!re.text(email)) return false;
+  return true;
+}
 
+function salvar() {
+  let id = document.getElementById("id").value;
+  
+  let testeCandidato = {
+    cpf: $("#cpf").cleanVal(),
+    nome: document.getElementById("nome").value,
+    celular: $("#celular").cleanVal(),
+    email: document.getElementById("email").value,
+    sexo: document.getElementById("sexoMasculino").checked,
+    nascimento: document.getElementById("nascimento").value,
+    skills: {
+      html: document.getElementById("skillHtml").checked,
+      css: document.getElementById("skillCss").checked,
+      js: document.getElementById("skillJs").checked,
+      bootstrap: document.getElementById("skillBootstrap").checked,
+    }
+  };
+  
+  // Fazer validações aqui
+  validateCandidato(testeCandidato);
   // Fazer validações aqui
 
   candidato = {
     id: id!=''?id:new Date().getTime(),
-    cpf: cpf,
-    nome: nome,
-    celular: celular,
-    email: email,
-    sexo: sexo?'Masculino':'Feminino',
-    nascimento: nascimento_str,
-    skills: {
-      html: skillHtml,
-      css: skillCss,
-      js: skillJs,
-      bootstrap: skillBootstrap
-    }
+    cpf: testeCandidato["cpf"],
+    nome: testeCandidato["nome"],
+    celular: testeCandidato["celular"],
+    email: testeCandidato["email"],
+    sexo: testeCandidato["sexo"]?'Masculino':'Feminino',
+    nascimento: testeCandidato["nascimento"],
+    skills: testeCandidato["skills"]
   };
   
-  console.log(typeof candidato.cpf);
-  console.log(candidato.nascimento);
-
+  
   if(id!=''){
     let checkCandidato = candidatos.find(e=>e.id == candidato.id);
     checkCandidato.cpf = candidato.cpf;
@@ -208,6 +231,7 @@ function salvar() {
     checkCandidato.sexo = candidato.sexo;
     checkCandidato.nascimento = candidato.nascimento;
     checkCandidato.skills = candidato.skills;
+    localStorage.setItem("localStorageCandidatos", JSON.stringify(candidatos));
   }else{
     candidatos.push(candidato);
     localStorage.setItem("localStorageCandidatos", JSON.stringify(candidatos));
@@ -256,7 +280,6 @@ function listarCandidatos() {
     //botaoEditar.setAttribute("style", "background-color: lightblue;");
     botaoEditar.innerHTML = '<i class="material-icons md-36 md-right-padding">edit</i>Editar';
     botaoEditar.onclick = function () {
-      console.log('editar');
       abrirModal(candidato);
     }
     colunaEditarRemover.appendChild(botaoEditar);

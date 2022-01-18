@@ -127,35 +127,6 @@ table td {
   height: 50px;
 }
 
-/* #col-edit-remover:after {
-  content: "";
-  clear: both;
-  display: table;
-} */
-
-/* #btn-edit {
-  vertical-align: middle;
-  text-align: center;
-  width: 50%;
-  height: 100%;
-  cursor: pointer;
-}
-
-#btn-remove {
-  vertical-align: middle;
-  text-align: center;
-  width: 50%;
-  height: 100%;
-}
-
-#btn-remove:hover {
-  color: red;
-}
-
-#btn-edit:hover {
-  color: lightblue;
-} */
-
 /*1080px*/
 @media screen and (max-width: 800px) {
   table {
