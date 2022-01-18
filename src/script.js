@@ -1,8 +1,3 @@
-$(document).ready(function() {
-  $("#cpf").mask("000.000.000-00");
-  $("#celular").mask("(00) 00000-0000");
-  $("#nascimento").mask("00/00/0000", {placeholder: "DD/MM/AAAA"});
-});
 
 let candidatos = [];
 
@@ -34,6 +29,12 @@ function abrirModal(candidato) {
     document.getElementById("skillCss").checked = candidato.skills.css;
     document.getElementById("skillJs").checked = candidato.skills.js;
   }
+  
+  $(document).ready(function() {
+    $("#cpf").mask("000.000.000-00");
+    $("#celular").mask("(00) 00000-0000");
+    $("#nascimento").mask("00/00/0000", {placeholder: "DD/MM/AAAA"});
+  });
 
   $('#candidatoModal').modal('show');
 }
@@ -60,7 +61,7 @@ function fecharModal() {
 
 function showCustomAlert(alertMsg)
 {
-  if (document.getElementById("custom-alert")) { close_custom_alert(); }
+  if (document.getElementById("custom-alert")) { closeCustomAlert(); }
   let customAlert = document.createElement("div");
   customAlert.setAttribute("class", "alert alert-danger alert-dismissible fade show");
   customAlert.setAttribute("id", "custom-alert");
@@ -90,18 +91,22 @@ function validateCandidato(candidato)
   //console.log(candidato);
   candidato["nome"] = candidato["nome"].trim();
   candidato["email"] = candidato["email"].trim();
-  let nascimentoDate = new Date(`${candidato["nascimento"].substring(3,5)}/${candidato["nascimento"].substring(0,2)}/${candidato["nascimento"].substring(6)}`);
+  let nascimentoDate = new Date(`${candidato["data de nascimento"].substring(3,5)}/${candidato["data de nascimento"].substring(0,2)}/${candidato["data de nascimento"].substring(6)}`);
   
   // Check fields fill
   let keys = Object.keys(candidato);
   keys.pop();
-  console.log(keys);
+  console.log(candidato["sexo"]);
   for (let key of keys) {
     if (!candidato[key]) {
+      console.log(candidato["sexo"]);
+      console.log(candidato[key]);
       showCustomAlert(`Campo ${key} é obrigatório.`); return false;
     }
   }
   let isSkill = false;
+  //console.log(candidato["skills"]);
+  //console.log(candidato);
   for (let skill in candidato["skills"]) {
     if (candidato["skills"][skill]) {
       isSkill = true;
@@ -111,48 +116,29 @@ function validateCandidato(candidato)
   if (!isSkill) {
     showCustomAlert("Você precisa informar no mínimo 1 habilidade."); return false;
   }
- /* 
-  if (!cpf) {
+  
+  // Validate
+  else if (!validadeCpf(candidato["cpf"])) {
+    showCustomAlert("CPF inválido."); return false;
   }
-  else if (!validadeCpf(cpf)) {
-    show_custom_alert("CPF inválido."); return;
+  else if ((candidato["nome"].match(/[0-9]/)) || (candidato["nome"].split(" ").length < 2)) {
+    showCustomAlert("Nome inválido. Preencha nome e sobrenome."); return false;
+  }
+  else if (candidato["celular"].length != BR_PHONE_NUMBER_SIZE) {
+    showCustomAlert("Número de celular inválido."); return false;
   }
   
-  else if (!nome) {
-    show_custom_alert("Campo nome é obrigatório."); return;
+  else if (!validateEmail(candidato["email"])) {
+    showCustomAlert("Email inválido."); return false;
   }
-  else if ((nome.match(/[0-9]/)) || (nome.split(" ").length < 2)) {
-    show_custom_alert("Nome inválido. Preencha nome e sobrenome."); return;
+  else if ((candidato["data de nascimento"].length < DATE_STR_SIZE) || (nascimentoDate == "Invalid Date")) {
+    showCustomAlert("Data inválida."); return;
   }
-  
-  else if (!celular) {
-    show_custom_alert("Campo celular é obrigatório."); return;
-  }
-  else if (celular.length != BR_PHONE_NUMBER_SIZE) {
-    show_custom_alert("Número de celular inválido."); return;
+  else if (nascimentoDate > minDate) {
+    showCustomAlert("Você precisa ter no mínimo 16 anos.");
   }
   
-  else if (!email) {
-    show_custom_alert("Campo email é obrigatório."); return;
-  }
-  else if (!validateEmail(email)) {
-    show_custom_alert("Email inválido."); return;
-  }
-  
-  else if (!nascimento_str) {
-    show_custom_alert("Campo data é obrigatório."); return;
-  }
-  else if ((nascimento_str.length < DATE_STR_SIZE) || (nascimento_date == "Invalid Date")) {
-    show_custom_alert("Data inválida."); return;
-  }
-  else if (nascimento_date > minDate) {
-    show_custom_alert("Você precisa ter no mínimo 16 anos.");
-  }
-  
-  else if (!sexo) {
-    show_custom_alert("Seleção de sexo é obrigatória."); return;
-  }
-  */
+ return true;
 }
 
 function validadeCpf(cpf)
@@ -184,9 +170,10 @@ function validadeCpf(cpf)
 function validateEmail(email)
 {
   if (typeof email != "string") { console.log("must be string."); }
-  let re = /^([a-zA-Z0-9\._]+)@([a-zA-Z0-9])+.([a-z]+)(.[a-z]+)?$/
+  let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  //let re = /^([a-zA-Z0-9\._]+)@([a-zA-Z0-9])+.([a-z]+)(.[a-z]+)?$/
   
-  if (!re.text(email)) return false;
+  if (!email.match(re)) return false;
   return true;
 }
 
@@ -198,8 +185,8 @@ function salvar() {
     nome: document.getElementById("nome").value,
     celular: $("#celular").cleanVal(),
     email: document.getElementById("email").value,
-    sexo: document.getElementById("sexoMasculino").checked,
-    nascimento: document.getElementById("nascimento").value,
+    sexo: document.getElementById("sexoMasculino").checked ? 'Masculino' : 'Feminino',
+    "data de nascimento": document.getElementById("nascimento").value,
     skills: {
       html: document.getElementById("skillHtml").checked,
       css: document.getElementById("skillCss").checked,
@@ -219,7 +206,7 @@ function salvar() {
     celular: testeCandidato["celular"],
     email: testeCandidato["email"],
     sexo: testeCandidato["sexo"]?'Masculino':'Feminino',
-    nascimento: testeCandidato["nascimento"],
+    nascimento: testeCandidato["data de nascimento"],
     skills: testeCandidato["skills"]
   };
   
