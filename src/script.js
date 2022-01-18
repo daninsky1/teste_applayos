@@ -15,7 +15,7 @@ if (localStorage.getItem("localStorageCandidatos") !== null) {
 }
 
 function abrirModal(candidato) {
-  console.log(candidato);
+  //console.log(candidato);
   if (candidato) {
     document.getElementById("id").value = candidato.id;
     document.getElementById("cpf").value = $("#cpf").masked(candidato.cpf);
@@ -94,11 +94,11 @@ function validateCandidato(candidato)
   // Check fields fill
   let keys = Object.keys(candidato);
   keys.pop();
-  console.log(candidato["sexo"]);
+  //console.log(candidato["sexo"]);
   for (let key of keys) {
     if (!candidato[key]) {
-      console.log(candidato["sexo"]);
-      console.log(candidato[key]);
+      //console.log(candidato["sexo"]);
+      //console.log(candidato[key]);
       showCustomAlert(`Campo ${key} é obrigatório.`); return false;
     }
   }
