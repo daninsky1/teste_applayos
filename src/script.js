@@ -143,7 +143,7 @@ function validateCpf(cpf)
   // note: return true if cpf is valid
   if (typeof cpf != "string") { throw new typeerror("is not a string."); }
   const cpf_size = 11;
-  if (cpf.length != cpf_size) { return false; }
+  if ((cpf.length != cpf_size) || (cpf == "00000000000")) { return false; }
   
   let sum = 0;
   let remainder = 0;
