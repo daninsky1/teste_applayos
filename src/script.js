@@ -116,7 +116,7 @@ function validateCandidato(candidato)
   }
   
   // Validate
-  else if (!validadeCpf(candidato["cpf"])) {
+  else if (!validateCpf(candidato["cpf"])) {
     showCustomAlert("CPF inválido."); return false;
   }
   else if ((candidato["nome"].match(/[0-9]/)) || (candidato["nome"].split(" ").length < 2)) {
@@ -138,29 +138,60 @@ function validateCandidato(candidato)
  return true;
 }
 
-function validadeCpf(cpf)
+// function validadeCpf(cpf)
+// {
+//   // note: return true if cpf is valid
+//   if (typeof cpf != "string") { throw new typeerror("is not a string."); }
+//   const cpf_size = 11;
+//   if (cpf.length != cpf_size) { return false; }
+//   if ((cpf[7] == 1) && (cpf[8] != 0)) { return false; }
+  
+//   let d = cpf.split("");
+//   d.splice(9); d.reverse();
+  
+//   let v1 = 0;
+//   let v2 = 0;
+  
+//   for (let i = 0; i < 9; ++i) {
+//     v1 = v1 + d[i] * (9 - (i % 10));
+//     v2 = v2 + d[i] * (9 - ((i + 1) % 10));
+//   }
+  
+//   v1 = (v1 % 11) % 10;
+//   v2 = (v2 + v1 * 9) % 11 % 10;
+  
+//   if ((v1 != cpf[9]) || (v2 != cpf[10])) { return false; }
+//   return true;
+// }
+
+function validateCpf(cpf)
 {
-  // NOTE: return true if cpf is valid
-  if (typeof cpf != "string") { throw new TypeError("is not a string."); }
-  const CPF_SIZE = 11;
-  if (cpf.length != CPF_SIZE) { return false; }
-  if ((cpf[7] == 1) && (cpf[8] != 0)) { return false; }
+  // note: return true if cpf is valid
+  if (typeof cpf != "string") { throw new typeerror("is not a string."); }
+  const cpf_size = 11;
+  if (cpf.length != cpf_size) { return false; }
   
-  let d = cpf.split("");
-  d.splice(9); d.reverse();
-  
-  let v1 = 0;
-  let v2 = 0;
-  
-  for (let i = 0; i < 9; ++i) {
-    v1 = v1 + d[i] * (9 - (i % 10));
-    v2 = v2 + d[i] * (9 - ((i + 1) % 10));
+  let sum = 0;
+  let remainder = 0;
+  for (let i = 1; i <= 9; ++i) {
+    sum += cpf[i-1] * (11 - i);
   }
+  remainder = sum * 10 % 11;
+  if ((remainder == 10) || (remainder == 11)) {
+    remainder = 0;
+  }
+  if (remainder != cpf[9]) { return false; }
   
-  v1 = (v1 % 11) % 10;
-  v2 = (v2 + v1 * 9) % 11 % 10;
+  sum = 0;
+  for (let i = 1; i <= 10; ++i) {
+    sum += cpf[i-1] * (12 - i);
+  }
+  remainder = sum * 10 % 11;
+  if ((remainder == 10) || (remainder == 11)) {
+    remainder = 0;
+  }
+  if (remainder != cpf[10]) { return false; }
   
-  if ((v1 != cpf[9]) || (v2 != cpf[10])) return false;
   return true;
 }
 
